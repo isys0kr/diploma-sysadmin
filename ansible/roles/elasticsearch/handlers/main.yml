@@ -1,0 +1,5 @@
+---
+- name: Перезапустить Elasticsearch
+  systemd:
+    name: elasticsearch
+    state: restarted

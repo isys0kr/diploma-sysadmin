@@ -1,0 +1,10 @@
+PidFile=/run/zabbix/zabbix_agentd.pid
+LogFile=/var/log/zabbix/zabbix_agentd.log
+LogFileSize=0
+
+Server={{ 'zabbix-host.ru-central1.internal,127.0.0.1' if inventory_hostname == 'zabbix' else 'zabbix-host.ru-central1.internal' }}
+ServerActive=zabbix-host.ru-central1.internal
+
+Hostname={{ inventory_hostname }}
+
+Include=/etc/zabbix/zabbix_agentd.conf.d/*.conf

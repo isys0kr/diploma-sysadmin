@@ -1,0 +1,5 @@
+---
+- name: Перезапустить Kibana
+  systemd:
+    name: kibana
+    state: restarted

@@ -1,0 +1,86 @@
+---
+- name: Установить зависимости
+  apt:
+    name:
+      - curl
+      - gnupg
+      - apt-transport-https
+    state: present
+    update_cache: true
+
+- name: Скачать ключ Elastic
+  get_url:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    dest: /tmp/elasticsearch.key
+    mode: "0644"
+
+- name: Установить ключ Elastic
+  shell: |
+    gpg --dearmor --yes \
+      -o /usr/share/keyrings/elasticsearch-keyring.gpg \
+      /tmp/elasticsearch.key
+  args:
+    creates: /usr/share/keyrings/elasticsearch-keyring.gpg
+
+- name: Добавить репозиторий Elastic
+  copy:
+    dest: /etc/apt/sources.list.d/elastic-8.x.list
+    mode: "0644"
+    content: |
+      deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://mirror.yandex.ru/mirrors/elastic/8 stable main
+
+- name: Установить Elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: true
+
+- name: Настроить Elasticsearch
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+    mode: "0660"
+  notify: Перезапустить Elasticsearch
+
+- name: Ограничить память Elasticsearch
+  copy:
+    dest: /etc/elasticsearch/jvm.options.d/heap.options
+    owner: root
+    group: elasticsearch
+    mode: "0660"
+    content: |
+      -Xms1g
+      -Xmx1g
+  notify: Перезапустить Elasticsearch
+
+- name: Удалить автоматические secure-настройки Elasticsearch
+  ansible.builtin.shell: |
+    for key in       xpack.security.transport.ssl.keystore.secure_password       xpack.security.transport.ssl.truststore.secure_password       xpack.security.http.ssl.keystore.secure_password
+    do
+      if /usr/share/elasticsearch/bin/elasticsearch-keystore list | grep -Fxq "$key"; then
+        /usr/share/elasticsearch/bin/elasticsearch-keystore remove "$key"
+      fi
+    done
+  args:
+    executable: /bin/bash
+  register: elasticsearch_keystore_cleanup
+  changed_when: elasticsearch_keystore_cleanup.stdout != ""
+  notify: Перезапустить Elasticsearch
+
+- name: Запустить Elasticsearch
+  systemd:
+    name: elasticsearch
+    enabled: true
+    state: started
+    daemon_reload: true
+
+- name: Дождаться запуска Elasticsearch
+  uri:
+    url: http://127.0.0.1:9200/
+    status_code: 200
+  register: elastic_health
+  retries: 30
+  delay: 5
+  until: elastic_health.status == 200

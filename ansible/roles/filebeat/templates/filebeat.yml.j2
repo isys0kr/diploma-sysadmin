@@ -1,0 +1,30 @@
+filebeat.inputs:
+  - type: filestream
+    id: nginx-access
+    enabled: true
+    paths:
+      - /var/log/nginx/access.log
+    fields:
+      log_type: nginx_access
+      host_name: "{{ inventory_hostname }}"
+    fields_under_root: true
+
+  - type: filestream
+    id: nginx-error
+    enabled: true
+    paths:
+      - /var/log/nginx/error.log
+    fields:
+      log_type: nginx_error
+      host_name: "{{ inventory_hostname }}"
+    fields_under_root: true
+
+output.elasticsearch:
+  hosts:
+    - "http://elasticsearch-host.ru-central1.internal:9200"
+
+setup.kibana:
+  host: "http://kibana-host.ru-central1.internal:5601"
+
+processors:
+  - add_host_metadata: ~

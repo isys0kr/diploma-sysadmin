@@ -1,0 +1,27 @@
+---
+- name: Настроить Zabbix agents
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Создать каталог конфигурации Zabbix
+      ansible.builtin.file:
+        path: /etc/zabbix/zabbix_agentd.conf.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Развернуть конфигурацию Zabbix agenturation
+      ansible.builtin.template:
+        src: ../roles/zabbix_agent/templates/zabbix_agentd.conf.j2
+        dest: /etc/zabbix/zabbix_agentd.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Перезапустить Zabbix agent
+      ansible.builtin.service:
+        name: zabbix-agent
+        state: restarted
+        enabled: true

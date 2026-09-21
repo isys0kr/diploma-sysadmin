@@ -1,0 +1,15 @@
+---
+- name: Перезапустить Zabbix server
+  ansible.builtin.service:
+    name: zabbix-server
+    state: restarted
+
+- name: Перезапустить PHP-FPM
+  ansible.builtin.service:
+    name: php8.3-fpm
+    state: restarted
+
+- name: Перезапустить nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

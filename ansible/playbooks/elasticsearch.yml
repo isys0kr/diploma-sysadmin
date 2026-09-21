@@ -1,0 +1,7 @@
+---
+- name: Настроить Elasticsearch
+  hosts: elasticsearch_servers
+  become: true
+
+  roles:
+    - elasticsearch

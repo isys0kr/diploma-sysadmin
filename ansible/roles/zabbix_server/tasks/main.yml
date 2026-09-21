@@ -1,0 +1,109 @@
+---
+- name: Установить PostgreSQL и зависимости
+  ansible.builtin.apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - nginx
+      - php-fpm
+      - php-pgsql
+      - php-gd
+      - php-bcmath
+      - php-mbstring
+      - php-xml
+      - php-ldap
+    state: present
+    update_cache: true
+  become: true
+
+- name: Установить пакеты Zabbix server
+  ansible.builtin.apt:
+    name:
+      - zabbix-server-pgsql
+      - zabbix-frontend-php
+      - zabbix-nginx-conf
+      - zabbix-sql-scripts
+    state: present
+  become: true
+
+- name: Запустить PostgreSQL
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: true
+  become: true
+
+- name: Создать пользователя Zabbix в PostgreSQL
+  ansible.builtin.shell: |
+    if sudo -u postgres psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='zabbix'" | grep -q 1; then
+      echo unchanged
+    else
+      sudo -u postgres psql -c "CREATE USER zabbix WITH PASSWORD 'zabbix';"
+      echo changed
+    fi
+  args:
+    executable: /bin/bash
+  register: zabbix_db_user
+  changed_when: zabbix_db_user.stdout.strip() == "changed"
+  become: true
+
+- name: Создать базу Zabbix
+  ansible.builtin.shell: |
+    if sudo -u postgres psql -tAc "SELECT 1 FROM pg_database WHERE datname='zabbix'" | grep -q 1; then
+      echo unchanged
+    else
+      sudo -u postgres createdb -O zabbix zabbix
+      echo changed
+    fi
+  args:
+    executable: /bin/bash
+  register: zabbix_database
+  changed_when: zabbix_database.stdout.strip() == "changed"
+  become: true
+
+- name: Проверить схему Zabbix
+  ansible.builtin.shell: |
+    sudo -u postgres psql -d zabbix -tAc \
+    "SELECT 1 FROM information_schema.tables WHERE table_name='users';"
+  register: zabbix_schema_check
+  changed_when: false
+  become: true
+
+- name: Импортировать схему Zabbix
+  ansible.builtin.shell: |
+    zcat /usr/share/zabbix-sql-scripts/postgresql/server.sql.gz | \
+    sudo -u zabbix psql zabbix
+  args:
+    executable: /bin/bash
+  when: zabbix_schema_check.stdout.strip() != "1"
+  become: true
+
+- name: Развернуть конфигурацию Zabbix server
+  ansible.builtin.template:
+    src: zabbix_server.conf.j2
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: root
+    group: zabbix
+    mode: "0640"
+  become: true
+
+- name: Запустить Zabbix server
+  ansible.builtin.service:
+    name: zabbix-server
+    state: started
+    enabled: true
+  become: true
+
+- name: Запустить PHP-FPM
+  ansible.builtin.service:
+    name: php8.3-fpm
+    state: started
+    enabled: true
+  become: true
+
+- name: Запустить nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+  become: true

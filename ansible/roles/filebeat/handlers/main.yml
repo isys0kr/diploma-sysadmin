@@ -1,0 +1,5 @@
+---
+- name: Перезапустить Filebeat
+  systemd:
+    name: filebeat
+    state: restarted

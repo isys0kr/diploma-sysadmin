@@ -1,0 +1,28 @@
+# Terraform state
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+
+# Секреты
+*.key
+*.pem
+*diploma-sa-key*.json
+.env
+.env.*
+
+# Ansible
+*.retry
+
+# Редакторы
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Временные файлы Terraform
+tfplan
+*.tfplan
+*.bak

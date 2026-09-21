@@ -1,0 +1,7 @@
+---
+- name: Настроить Kibana
+  hosts: kibana_servers
+  become: true
+
+  roles:
+    - kibana

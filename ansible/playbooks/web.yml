@@ -1,0 +1,7 @@
+---
+- name: Настроить веб-серверы
+  hosts: web
+  become: true
+
+  roles:
+    - web

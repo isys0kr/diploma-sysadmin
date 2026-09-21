@@ -1,0 +1,7 @@
+---
+- name: Настроить Zabbix server
+  hosts: zabbix
+  become: true
+
+  roles:
+    - zabbix_server
