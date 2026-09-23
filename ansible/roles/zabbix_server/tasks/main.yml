@@ -54,6 +54,8 @@
     - /tmp/zabbix-sql-scripts.deb
     - /tmp/zabbix-server-pgsql.deb
     - /tmp/zabbix-nginx-conf.deb
+  notify:
+    - Перезапустить PHP-FPM
   become: true
 
 - name: Запустить PostgreSQL
@@ -145,6 +147,26 @@
     name: php8.3-fpm
     state: started
     enabled: true
+  become: true
+
+- name: Проверить socket Zabbix PHP-FPM
+  ansible.builtin.stat:
+    path: /run/php/zabbix.sock
+  register: zabbix_php_socket
+  become: true
+
+- name: Перезапустить PHP-FPM для загрузки Zabbix pool
+  ansible.builtin.service:
+    name: php8.3-fpm
+    state: restarted
+  when: not zabbix_php_socket.stat.exists
+  become: true
+
+- name: Дождаться socket Zabbix PHP-FPM
+  ansible.builtin.wait_for:
+    path: /run/php/zabbix.sock
+    state: present
+    timeout: 30
   become: true
 
 - name: Отключить стандартный сайт nginx

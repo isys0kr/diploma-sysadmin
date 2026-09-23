@@ -7,6 +7,23 @@
     - zabbix_bootstrap
 
   tasks:
+    - name: Дождаться готовности Zabbix API
+      ansible.builtin.uri:
+        url: http://127.0.0.1/api_jsonrpc.php
+        method: POST
+        body_format: json
+        body:
+          jsonrpc: "2.0"
+          method: apiinfo.version
+          params: {}
+          id: 1
+        status_code: 200
+      register: zabbix_api_ready
+      retries: 30
+      delay: 5
+      until: zabbix_api_ready.status == 200
+      changed_when: false
+
     - name: Создать правило авторегистрации
       ansible.builtin.command:
         cmd: python3 /opt/zabbix-bootstrap/bootstrap_zabbix.py prepare
