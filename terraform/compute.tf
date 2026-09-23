@@ -87,7 +87,7 @@ resource "yandex_compute_instance" "web_1" {
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 1
     core_fraction = 20
   }
 
@@ -134,7 +134,7 @@ resource "yandex_compute_instance" "web_2" {
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 1
     core_fraction = 20
   }
 
@@ -181,7 +181,7 @@ resource "yandex_compute_instance" "zabbix" {
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 1
     core_fraction = 20
   }
 
@@ -228,7 +228,7 @@ resource "yandex_compute_instance" "elasticsearch" {
 
   resources {
     cores         = 2
-    memory        = 4
+    memory        = 2
     core_fraction = 20
   }
 
@@ -275,7 +275,7 @@ resource "yandex_compute_instance" "kibana" {
 
   resources {
     cores         = 2
-    memory        = 2
+    memory        = 1
     core_fraction = 20
   }
 
