@@ -1,4 +1,16 @@
 ---
+- name: Удалить старый основной репозиторий Zabbix
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/zabbix.sources
+    state: absent
+  become: true
+
+- name: Удалить старый репозиторий Zabbix tools
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/zabbix-tools.sources
+    state: absent
+  become: true
+
 - name: Установить системные зависимости Zabbix
   ansible.builtin.apt:
     name:
