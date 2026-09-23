@@ -32,10 +32,11 @@
     mode: "0644"
     content: |
       deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://mirror.yandex.ru/mirrors/elastic/8 stable main
+  register: elastic_repo
   become: true
 
 - name: Обновить кеш apt после добавления Elastic
   ansible.builtin.apt:
     update_cache: true
-    cache_valid_time: 3600
+  when: elastic_repo.changed
   become: true

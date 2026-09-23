@@ -59,9 +59,8 @@ resource "yandex_compute_instance" "admin_bastion" {
   }
 
   network_interface {
-    subnet_id      = yandex_vpc_subnet.public_b.id
-    nat            = true
-    nat_ip_address = yandex_vpc_address.bastion_public.external_ipv4_address[0].address
+    subnet_id = yandex_vpc_subnet.public_b.id
+    nat       = true
 
     security_group_ids = [
       yandex_vpc_security_group.admin_bastion.id
