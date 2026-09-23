@@ -12,18 +12,48 @@
       - php-mbstring
       - php-xml
       - php-ldap
+      - php-curl
     state: present
     update_cache: true
   become: true
 
-- name: Установить пакеты Zabbix server
+- name: Скопировать пакет Zabbix server
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/zabbix/zabbix-server-pgsql_1%3a7.0.30-1+ubuntu24.04_amd64.deb"
+    dest: /tmp/zabbix-server-pgsql.deb
+    mode: "0644"
+  become: true
+
+- name: Скопировать пакет Zabbix frontend
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/zabbix/zabbix-frontend-php_1%3a7.0.30-1+ubuntu24.04_all.deb"
+    dest: /tmp/zabbix-frontend-php.deb
+    mode: "0644"
+  become: true
+
+- name: Скопировать конфигурацию nginx для Zabbix
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/zabbix/zabbix-nginx-conf_1%3a7.0.30-1+ubuntu24.04_all.deb"
+    dest: /tmp/zabbix-nginx-conf.deb
+    mode: "0644"
+  become: true
+
+- name: Скопировать SQL-скрипты Zabbix
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/zabbix/zabbix-sql-scripts_1%3a7.0.30-1+ubuntu24.04_all.deb"
+    dest: /tmp/zabbix-sql-scripts.deb
+    mode: "0644"
+  become: true
+
+- name: Установить локальные пакеты Zabbix server
   ansible.builtin.apt:
-    name:
-      - zabbix-server-pgsql
-      - zabbix-frontend-php
-      - zabbix-nginx-conf
-      - zabbix-sql-scripts
+    deb: "{{ item }}"
     state: present
+  loop:
+    - /tmp/zabbix-frontend-php.deb
+    - /tmp/zabbix-sql-scripts.deb
+    - /tmp/zabbix-server-pgsql.deb
+    - /tmp/zabbix-nginx-conf.deb
   become: true
 
 - name: Запустить PostgreSQL

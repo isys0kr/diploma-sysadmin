@@ -1,0 +1,40 @@
+---
+- name: Установить зависимости для Elastic
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gnupg
+      - apt-transport-https
+      - ca-certificates
+    state: present
+    update_cache: true
+  become: true
+
+- name: Скопировать локальный ключ Elastic
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/keys/GPG-KEY-elasticsearch"
+    dest: /tmp/GPG-KEY-elasticsearch
+    mode: "0644"
+  become: true
+
+- name: Установить ключ Elastic
+  ansible.builtin.shell: |
+    gpg --dearmor --yes \
+      -o /usr/share/keyrings/elasticsearch-keyring.gpg \
+      /tmp/GPG-KEY-elasticsearch
+  args:
+    creates: /usr/share/keyrings/elasticsearch-keyring.gpg
+  become: true
+
+- name: Добавить зеркало Elastic Яндекса
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/elastic-8.x.list
+    mode: "0644"
+    content: |
+      deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://mirror.yandex.ru/mirrors/elastic/8 stable main
+  become: true
+
+- name: Обновить кеш apt после добавления Elastic
+  ansible.builtin.apt:
+    update_cache: true
+  become: true

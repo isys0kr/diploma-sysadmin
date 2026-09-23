@@ -1,7 +1,8 @@
 ---
-- name: Установить Zabbix agent on all servers
+- name: Установить и настроить Zabbix agent
   hosts: all
   become: true
 
   roles:
+    - zabbix_repo
     - zabbix_agent

@@ -1,0 +1,37 @@
+---
+- name: Установить системные зависимости Zabbix
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - libcurl4t64
+      - libldap2
+      - libmodbus5
+      - libpcre2-8-0
+      - libssl3t64
+      - zlib1g
+      - adduser
+      - lsb-base
+      - libcares2
+      - libevent-core-2.1-7t64
+      - libevent-extra-2.1-7t64
+      - libevent-pthreads-2.1-7t64
+      - libodbc2
+      - libopenipmi0t64
+      - libpq5
+      - libsnmp40t64
+      - libssh-4
+      - libxml2
+      - fping
+      - php-pgsql
+      - php-mbstring
+      - php-bcmath
+      - php-xml
+      - php-gd
+      - php-ldap
+      - php-curl
+      - fonts-dejavu
+      - nginx
+      - php-fpm
+    state: present
+    update_cache: true
+  become: true

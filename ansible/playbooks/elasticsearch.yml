@@ -1,7 +1,8 @@
 ---
-- name: Настроить Elasticsearch
+- name: Установить и настроить Elasticsearch
   hosts: elasticsearch_servers
   become: true
 
   roles:
+    - elastic_common
     - elasticsearch

@@ -1,7 +1,8 @@
 ---
-- name: Настроить Zabbix server
-  hosts: zabbix
+- name: Установить и настроить Zabbix server
+  hosts: zabbix_servers
   become: true
 
   roles:
+    - zabbix_repo
     - zabbix_server

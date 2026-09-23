@@ -1,7 +1,8 @@
 ---
-- name: Настроить Filebeat on web servers
+- name: Установить и настроить Filebeat
   hosts: web
   become: true
 
   roles:
+    - elastic_common
     - filebeat

@@ -1,0 +1,6 @@
+9ee2a19db615e742a60ca280196c4f4901b813922bd47f7f5fe913b0c51173e4  packages/zabbix/zabbix-agent_1%3a7.0.30-1+ubuntu24.04_amd64.deb
+2a72b15cd06b89e71776381dea1a02258f779cbafde18fbbbce592ce10810031  packages/zabbix/zabbix-frontend-php_1%3a7.0.30-1+ubuntu24.04_all.deb
+6c76d5f6ec32289dbfb9be1faa9db99814f1bee07f017dfff5f4d0cf733d0478  packages/zabbix/zabbix-nginx-conf_1%3a7.0.30-1+ubuntu24.04_all.deb
+c1bcfbba0dd7b659edb9be244a86628be500c98c4b779c2308b2e6f6899de9ca  packages/zabbix/zabbix-server-pgsql_1%3a7.0.30-1+ubuntu24.04_amd64.deb
+40a412031db0ec9d7f02ceb5ca11c4566b87fee1383265caa5c321e093465de2  packages/zabbix/zabbix-sql-scripts_1%3a7.0.30-1+ubuntu24.04_all.deb
+db52809c5f6b27f9c2bed45cb43e398c659275f3d35305653c6750a0db90f5eb  packages/keys/GPG-KEY-elasticsearch

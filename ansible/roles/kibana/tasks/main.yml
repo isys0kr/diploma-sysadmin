@@ -1,52 +1,24 @@
 ---
-- name: Установить зависимости
-  apt:
-    name:
-      - curl
-      - gnupg
-      - apt-transport-https
+- name: Установить Kibana 8.19.21
+  ansible.builtin.apt:
+    name: kibana=8.19.21
     state: present
-    update_cache: true
-
-- name: Скачать ключ Elastic
-  get_url:
-    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
-    dest: /tmp/elasticsearch.key
-    mode: "0644"
-
-- name: Установить ключ Elastic
-  shell: |
-    gpg --dearmor --yes \
-      -o /usr/share/keyrings/elasticsearch-keyring.gpg \
-      /tmp/elasticsearch.key
-  args:
-    creates: /usr/share/keyrings/elasticsearch-keyring.gpg
-
-- name: Добавить репозиторий Elastic
-  copy:
-    dest: /etc/apt/sources.list.d/elastic-8.x.list
-    mode: "0644"
-    content: |
-      deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://mirror.yandex.ru/mirrors/elastic/8 stable main
-
-- name: Установить Kibana
-  apt:
-    name: kibana
-    state: present
-    update_cache: true
+  become: true
 
 - name: Настроить Kibana
-  template:
+  ansible.builtin.template:
     src: kibana.yml.j2
     dest: /etc/kibana/kibana.yml
     owner: root
     group: kibana
     mode: "0660"
   notify: Перезапустить Kibana
+  become: true
 
 - name: Запустить Kibana
-  systemd:
+  ansible.builtin.systemd:
     name: kibana
     enabled: true
     state: started
     daemon_reload: true
+  become: true

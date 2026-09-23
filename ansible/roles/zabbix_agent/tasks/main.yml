@@ -1,34 +1,14 @@
 ---
-- name: Установить зависимости
-  ansible.builtin.apt:
-    name:
-      - wget
-      - gnupg
-      - ca-certificates
-    state: present
-    update_cache: true
-  become: true
-
-- name: Скачать пакет репозитория Zabbix
-  ansible.builtin.get_url:
-    url: https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.0+ubuntu24.04_all.deb
-    dest: /tmp/zabbix-release.deb
+- name: Скопировать пакет Zabbix agent
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../packages/zabbix/zabbix-agent_1%3a7.0.30-1+ubuntu24.04_amd64.deb"
+    dest: /tmp/zabbix-agent.deb
     mode: "0644"
   become: true
 
-- name: Установить репозиторий Zabbix
+- name: Установить Zabbix agent из локального пакета
   ansible.builtin.apt:
-    deb: /tmp/zabbix-release.deb
-  become: true
-
-- name: Обновить кеш apt after adding Zabbix repository
-  ansible.builtin.apt:
-    update_cache: true
-  become: true
-
-- name: Установить Zabbix agent
-  ansible.builtin.apt:
-    name: zabbix-agent
+    deb: /tmp/zabbix-agent.deb
     state: present
   become: true
 
@@ -48,11 +28,12 @@
     owner: root
     group: root
     mode: "0644"
+  notify: Перезапустить Zabbix agent
   become: true
 
 - name: Запустить Zabbix agent
   ansible.builtin.service:
     name: zabbix-agent
-    state: restarted
+    state: started
     enabled: true
   become: true

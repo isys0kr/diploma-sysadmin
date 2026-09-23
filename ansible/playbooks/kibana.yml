@@ -1,7 +1,8 @@
 ---
-- name: Настроить Kibana
+- name: Установить и настроить Kibana
   hosts: kibana_servers
   become: true
 
   roles:
+    - elastic_common
     - kibana

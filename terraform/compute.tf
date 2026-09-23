@@ -1,12 +1,8 @@
-data "yandex_compute_image" "ubuntu" {
-  family    = "ubuntu-2404-lts"
-  folder_id = "standard-images"
-}
-
 
 # cloud-init
 
 locals {
+  ubuntu_image_id  = "fd8nj6iro13qffg31not"
   common_user_data = <<-EOF
     #cloud-config
 
@@ -56,7 +52,7 @@ resource "yandex_compute_instance" "admin_bastion" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
@@ -104,7 +100,7 @@ resource "yandex_compute_instance" "web_1" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
@@ -151,7 +147,7 @@ resource "yandex_compute_instance" "web_2" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
@@ -198,7 +194,7 @@ resource "yandex_compute_instance" "zabbix" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
@@ -245,7 +241,7 @@ resource "yandex_compute_instance" "elasticsearch" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
@@ -292,7 +288,7 @@ resource "yandex_compute_instance" "kibana" {
     auto_delete = true
 
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu.id
+      image_id = local.ubuntu_image_id
       type     = "network-hdd"
       size     = 10
     }
