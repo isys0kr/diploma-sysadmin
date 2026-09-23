@@ -26,3 +26,6 @@
 tfplan
 *.tfplan
 *.bak
+
+# Generated Ansible inventory
+ansible/inventory/hosts.ini
