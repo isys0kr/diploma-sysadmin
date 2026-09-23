@@ -1,0 +1,326 @@
+{
+  "name": "USE Dashboard",
+  "private": "1",
+  "display_period": "30",
+  "auto_start": "1",
+  "uuid": "",
+  "pages": [
+    {
+      "name": "USE",
+      "display_period": "0",
+      "widgets": [
+        {
+          "type": "svggraph",
+          "name": "CPU utilization",
+          "x": "0",
+          "y": "0",
+          "width": "36",
+          "height": "5",
+          "view_mode": "0",
+          "fields": [
+            {
+              "type": "1",
+              "name": "reference",
+              "value": "CPU01"
+            },
+            {
+              "type": "0",
+              "name": "rf_rate",
+              "value": "60"
+            },
+            {
+              "type": "0",
+              "name": "ds.0.dataset_type",
+              "value": "1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.color",
+              "value": "1E88E5"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.0",
+              "value": "bast"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.1",
+              "value": "web-1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.2",
+              "value": "web-2"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.3",
+              "value": "zabbix"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.4",
+              "value": "elasticsearch"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.5",
+              "value": "kibana"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.items.0",
+              "value": "*CPU utilization*"
+            }
+          ]
+        },
+        {
+          "type": "svggraph",
+          "name": "Memory utilization",
+          "x": "36",
+          "y": "0",
+          "width": "36",
+          "height": "5",
+          "view_mode": "0",
+          "fields": [
+            {
+              "type": "1",
+              "name": "reference",
+              "value": "MEM01"
+            },
+            {
+              "type": "0",
+              "name": "rf_rate",
+              "value": "60"
+            },
+            {
+              "type": "0",
+              "name": "ds.0.dataset_type",
+              "value": "1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.color",
+              "value": "43A047"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.0",
+              "value": "bast"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.1",
+              "value": "web-1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.2",
+              "value": "web-2"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.3",
+              "value": "zabbix"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.4",
+              "value": "elasticsearch"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.5",
+              "value": "kibana"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.items.0",
+              "value": "*Memory utilization*"
+            }
+          ]
+        },
+        {
+          "type": "svggraph",
+          "name": "Disk utilization",
+          "x": "0",
+          "y": "5",
+          "width": "36",
+          "height": "5",
+          "view_mode": "0",
+          "fields": [
+            {
+              "type": "1",
+              "name": "reference",
+              "value": "DSK01"
+            },
+            {
+              "type": "0",
+              "name": "rf_rate",
+              "value": "60"
+            },
+            {
+              "type": "0",
+              "name": "ds.0.dataset_type",
+              "value": "1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.color",
+              "value": "FB8C00"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.0",
+              "value": "bast"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.1",
+              "value": "web-1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.2",
+              "value": "web-2"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.3",
+              "value": "zabbix"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.4",
+              "value": "elasticsearch"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.5",
+              "value": "kibana"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.items.0",
+              "value": "*Space: Used, in %*"
+            }
+          ]
+        },
+        {
+          "type": "svggraph",
+          "name": "Network traffic",
+          "x": "36",
+          "y": "5",
+          "width": "36",
+          "height": "5",
+          "view_mode": "0",
+          "fields": [
+            {
+              "type": "1",
+              "name": "reference",
+              "value": "NET01"
+            },
+            {
+              "type": "0",
+              "name": "rf_rate",
+              "value": "60"
+            },
+            {
+              "type": "0",
+              "name": "ds.0.dataset_type",
+              "value": "1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.color",
+              "value": "8E24AA"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.0",
+              "value": "bast"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.1",
+              "value": "web-1"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.2",
+              "value": "web-2"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.3",
+              "value": "zabbix"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.4",
+              "value": "elasticsearch"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.hosts.5",
+              "value": "kibana"
+            },
+            {
+              "type": "1",
+              "name": "ds.0.items.0",
+              "value": "*Bits received*"
+            },
+            {
+              "type": "0",
+              "name": "ds.1.dataset_type",
+              "value": "1"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.color",
+              "value": "E53935"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.0",
+              "value": "bast"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.1",
+              "value": "web-1"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.2",
+              "value": "web-2"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.3",
+              "value": "zabbix"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.4",
+              "value": "elasticsearch"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.hosts.5",
+              "value": "kibana"
+            },
+            {
+              "type": "1",
+              "name": "ds.1.items.0",
+              "value": "*Bits sent*"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "users": [],
+  "userGroups": []
+}

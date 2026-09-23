@@ -124,11 +124,57 @@
     enabled: true
   become: true
 
+- name: Удалить лишний PHP-FPM symlink Zabbix
+  ansible.builtin.file:
+    path: /etc/php/8.3/fpm/pool.d/zabbix.conf
+    state: absent
+  notify: Перезапустить PHP-FPM
+  become: true
+
+- name: Развернуть конфигурацию Zabbix frontend
+  ansible.builtin.template:
+    src: zabbix.conf.php.j2
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: www-data
+    group: www-data
+    mode: "0640"
+  become: true
+
 - name: Запустить PHP-FPM
   ansible.builtin.service:
     name: php8.3-fpm
     state: started
     enabled: true
+  become: true
+
+- name: Отключить стандартный сайт nginx
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Перезапустить nginx
+  become: true
+
+- name: Развернуть nginx-конфигурацию Zabbix
+  ansible.builtin.template:
+    src: nginx-zabbix.conf.j2
+    dest: /etc/nginx/sites-available/zabbix
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Перезапустить nginx
+  become: true
+
+- name: Включить сайт Zabbix
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/zabbix
+    dest: /etc/nginx/sites-enabled/zabbix
+    state: link
+  notify: Перезапустить nginx
+  become: true
+
+- name: Проверить конфигурацию nginx
+  ansible.builtin.command: nginx -t
+  changed_when: false
   become: true
 
 - name: Запустить nginx

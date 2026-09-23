@@ -5,3 +5,4 @@
 - import_playbook: elasticsearch.yml
 - import_playbook: kibana.yml
 - import_playbook: filebeat.yml
+- import_playbook: zabbix-bootstrap.yml

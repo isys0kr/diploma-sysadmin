@@ -1,0 +1,28 @@
+---
+- name: Создать каталог bootstrap Zabbix
+  ansible.builtin.file:
+    path: /opt/zabbix-bootstrap/dashboards
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Скопировать bootstrap-скрипт
+  ansible.builtin.copy:
+    src: bootstrap_zabbix.py
+    dest: /opt/zabbix-bootstrap/bootstrap_zabbix.py
+    mode: "0755"
+  become: true
+
+- name: Скопировать USE Dashboard
+  ansible.builtin.copy:
+    src: dashboards/use-dashboard.json
+    dest: /opt/zabbix-bootstrap/dashboards/use-dashboard.json
+    mode: "0644"
+  become: true
+
+- name: Скопировать HTTP Dashboard
+  ansible.builtin.copy:
+    src: dashboards/http-dashboard.json
+    dest: /opt/zabbix-bootstrap/dashboards/http-dashboard.json
+    mode: "0644"
+  become: true

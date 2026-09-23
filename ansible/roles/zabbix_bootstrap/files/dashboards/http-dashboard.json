@@ -1,0 +1,38 @@
+{
+  "name": "HTTP Dashboard",
+  "private": "1",
+  "display_period": "30",
+  "auto_start": "1",
+  "uuid": "",
+  "pages": [
+    {
+      "name": "HTTP",
+      "display_period": "0",
+      "widgets": [
+        {
+          "type": "web",
+          "name": "Website availability",
+          "x": "0",
+          "y": "0",
+          "width": "72",
+          "height": "6",
+          "view_mode": "0",
+          "fields": [
+            {
+              "type": "3",
+              "name": "hostids.0",
+              "value": "__ZABBIX_HOSTID__"
+            },
+            {
+              "type": "1",
+              "name": "reference",
+              "value": "WEB01"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "users": [],
+  "userGroups": []
+}

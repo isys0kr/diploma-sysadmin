@@ -1,0 +1,54 @@
+---
+- name: Подготовить авторегистрацию Zabbix
+  hosts: zabbix_servers
+  become: true
+
+  roles:
+    - zabbix_bootstrap
+
+  tasks:
+    - name: Создать правило авторегистрации
+      ansible.builtin.command:
+        cmd: python3 /opt/zabbix-bootstrap/bootstrap_zabbix.py prepare
+      register: zabbix_prepare
+      changed_when: "'Created action:' in zabbix_prepare.stdout"
+
+    - name: Показать результат подготовки
+      ansible.builtin.debug:
+        var: zabbix_prepare.stdout_lines
+
+
+- name: Зарегистрировать Zabbix agents после создания правила
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Перезапустить Zabbix agent для авторегистрации
+      ansible.builtin.service:
+        name: zabbix-agent
+        state: restarted
+      when: >
+        hostvars[groups['zabbix_servers'][0]]
+        .zabbix_prepare.changed | default(false)
+
+
+- name: Завершить bootstrap Zabbix
+  hosts: zabbix_servers
+  become: true
+
+  tasks:
+    - name: Создать web scenario и dashboard
+      ansible.builtin.command:
+        cmd: >-
+          python3
+          /opt/zabbix-bootstrap/bootstrap_zabbix.py
+          finalize
+          --alb-ip {{ alb_external_ip }}
+      register: zabbix_finalize
+      changed_when: >
+        'created (' in zabbix_finalize.stdout or
+        'Created scenario:' in zabbix_finalize.stdout
+
+    - name: Показать результат bootstrap
+      ansible.builtin.debug:
+        var: zabbix_finalize.stdout_lines
